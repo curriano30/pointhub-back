@@ -20,6 +20,7 @@ class User(Base):
     is_verified = Column(Boolean, default=False)
     type = Column(Enum(UserType), nullable=False)
     role = Column(Enum(UserRole), nullable=True)
-    company_id = Column(Integer, ForeignKey('companies.id'), nullable=True)
+    company_id = Column(Integer, ForeignKey('companies.id', ondelete='CASCADE'), nullable=True)
 
-    company = relationship("Company", back_populates="users")
+    # Relación con la compañía
+    company = relationship('Company', back_populates='employees')
