@@ -8,6 +8,7 @@ class UserType(enum.Enum):
     company = "company"
 
 class UserRole(enum.Enum):
+    creator = "creator"
     admin = "admin"
     employee = "employee"
 
@@ -20,7 +21,11 @@ class User(Base):
     is_verified = Column(Boolean, default=False)
     type = Column(Enum(UserType), nullable=False)
     role = Column(Enum(UserRole), nullable=True)
-    company_id = Column(Integer, ForeignKey('companies.id', ondelete='CASCADE'), nullable=True)
+    plan_id = Column(Integer, ForeignKey('plans.id', ondelete='CASCADE'), nullable=True)
 
-    # Relación con la compañía
-    company = relationship('Company', back_populates='employees')
+    # Relación con el plan
+    plan = relationship('Plan', back_populates='users')
+
+    # Relación con los locales creados y empleados
+    created_locals = relationship('Local', back_populates='creator')
+    local_employee = relationship('LocalEmployee', back_populates='user')
